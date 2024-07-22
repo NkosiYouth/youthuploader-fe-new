@@ -1,31 +1,23 @@
-import React from 'react';
-import { Flex } from '@chakra-ui/react';
-import { Sidebar } from './partials'; // Import your Sidebar component
+import React from "react";
+import { Sidebar, Topbar } from "./partials";
+import { Outlet } from "react-router-dom";
+import { Box, Flex } from "@chakra-ui/react";
 
 interface DashboardLayoutProps {
-  children?: React.ReactNode; // Use ReactNode for more flexibility in children types
+  children?: React.ReactNode;
+  pageTitle?: string;
 }
 
-const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
+const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, pageTitle }) => {
   return (
     <Flex height="100vh">
-      {/* Sidebar */}
-      <Flex
-        as="aside"
-        align="center"
-        justify="space-between"
-        direction="column"
-        width="250px"
-        backgroundColor="gray.100"
-        padding="20px"
-      >
-        <Sidebar />
-      </Flex>
-
-      {/* Main Content */}
-      <Flex flex="1" direction="column" padding="20px">
-        {children}
-      </Flex>
+      <Sidebar />
+      <Box width={{ base: "100vw", lg: "calc(100vw - 280px)" }} height="100%">
+        <Topbar title={pageTitle || ""} />
+        <Box p={8} height={{ base: "90%", lg: "84%" }} overflowY="auto">
+          {children ? children : <Outlet />}
+        </Box>
+      </Box>
     </Flex>
   );
 };

@@ -6,7 +6,11 @@ export const ROUTES = {
 
     MAGIC_LINK_SENT: '/magic-link-sent',
 
-    DASHBOARD: '/dashboard'
+    DASHBOARD: '/dashboard',
+
+    UPLOAD_DOCUMENTS: '/upload-documents',
+    VERIFY_DOCUMENTS: '/verify-documents',
+    SPLIT_RENAME_DOC: '/split-rename-doc',
 };
 
 

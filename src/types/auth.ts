@@ -12,4 +12,6 @@ export interface AuthContextType {
     loginWithToken: (token: string) => Promise<void>;
     logout: () => void;
     requestMagicLink: (values: MagicLoginFormValues) => Promise<boolean>;
+    isLoading: boolean;
+    user: Record<string, string> | undefined;
 }

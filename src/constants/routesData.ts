@@ -14,24 +14,27 @@ export const routesData: RouteConfig[] = [
         path: ROUTES.MAGIC_LINK_SENT,
         component: MagicLinkSentPage,
         layout: AuthLayout,
-        isPrivate: false,
+        isPublic: true
     },
     {
         path: ROUTES.LOGIN,
         component: LoginPage,
         layout: AuthLayout,
-        isPrivate: false,
+        isPublic: true
     },
     {
         path: ROUTES.VERIFY,
         component: MagicLinkVerifyPage,
         layout: AuthLayout,
-        isPrivate: false,
+        isPublic: true
     },
     {
         path: ROUTES.DASHBOARD,
         component: Dashboard,
         layout: DashboardLayout,
-        isPrivate: false,
+        layoutProps: {
+            pageTitle:'Dashboard',
+        },
+        isPrivate: true,
     },
 ];

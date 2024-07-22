@@ -6,4 +6,5 @@ export interface RouteConfig {
     layout: React.FC;
     layoutProps?: Record<string, any>;
     isPrivate?: boolean;
+    isPublic?: boolean;
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { AuthContextType, MagicLoginFormValues } from "../../types";
 import AuthContext from "./AuthContext";
 import useFetchData from "../../hooks/useFetchData";
@@ -10,7 +10,8 @@ interface AuthProviderProps {
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    const [_user, setUser] = useState<any>(undefined);
+    const [user, setUser] = useState<any>(undefined);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const { postItem, loading, error } = useFetchData<any>('/auth/request-magic-login');
 
@@ -31,20 +32,21 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 localStorage.setItem('token', token);
                 localStorage.setItem('user', JSON.stringify(userData));
                 setIsAuthenticated(true);
+                setUser(userData); // Update user state
             }
-
         } catch (error) {
             setIsAuthenticated(false);
         }
-    }
+    };
 
     const logout = () => {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
         setIsAuthenticated(false);
+        setUser(undefined);
     };
 
-    const loadTokenWithUser = () => {
+    const loadTokenWithUser = useCallback(() => {
         const storedUser = localStorage.getItem('user');
         const storedToken = localStorage.getItem('token');
 
@@ -53,22 +55,29 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setUser(user);
             setIsAuthenticated(true);
         }
-    }
+        setIsLoading(false);
+    }, []);
 
     useEffect(() => {
         loadTokenWithUser();
-    }, []);
+    }, [loadTokenWithUser]);
+
+    useEffect(() => {
+        console.log(user, isAuthenticated);
+    }, [user, isAuthenticated]);
 
     const authContextValue: AuthContextType = {
         isAuthenticated,
         loginWithToken,
         requestMagicLink,
         logout,
+        isLoading,
+        user
     };
 
     return (
         <AuthContext.Provider value={authContextValue}>
-            {children && children}
+            {children}
         </AuthContext.Provider>
     );
 };
